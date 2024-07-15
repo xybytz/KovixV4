@@ -60,7 +60,7 @@ end
 local function sniper()
 	for i,v in pairs(game:FindService("Players"):GetPlayers()) do
 
-    	if HasItem("Emerald") then
+    	if HasItem("emerald") then
         	KillHumanoid(0)
         	LocalPlayer.CharacterAdded:Connect(function()
             	repeat task.wait() until IsAlive()
