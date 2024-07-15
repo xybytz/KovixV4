@@ -3246,13 +3246,13 @@ run(function()
 			{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(40), math.rad(-90)), Time = 0.1},
 			{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(70), math.rad(-135)), Time = 0.1}
 		},
-		--[[["Cat V5"] = {
+		["Cat V5"] = {
 			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(25), math.rad(-60)), Time = 0.1},
 			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-40), math.rad(40), math.rad(-90)), Time = 0.1},
 			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(55), math.rad(-115)), Time = 0.1},
 			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-50), math.rad(70), math.rad(-60)), Time = 0.1},
 			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(70), math.rad(-70)), Time = 0.1}
-		},--]]
+		},
 		Astral = {
 			{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-16), math.rad(60), math.rad(-80)), Time = 0.1},
 			{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-16), math.rad(60), math.rad(-80)), Time = 0.15},
@@ -4664,7 +4664,34 @@ run(function()
 		Function = function() end
 	})
 end)
+local idk = Render.CreateOptionsButton({
+    Name = "idk", -- name of object
+    Function = function(callback) -- function that is called when toggled
+        if callback then
+            print("enabled")
+        else
+            print("disabled")
+        end
+    end,
+    HoverText = "Placeholder", -- text that will show up after hovering over the button (optional)
+    Default = true, -- enabled on startup (optional)
+    ExtraText = function() return " Placeholder" end -- text that goes next to the button in Text GUI (optional)
+})
 
+local Snipe = Blatant.CreateOptionsButton({
+    Name = "Snipe", -- name of object
+    Function = function(callback) -- function that is called when toggled
+        if callback then
+			print("snipe!")
+
+        else
+            print("disabled")
+        end
+    end,
+    HoverText = "Placeholder", -- text that will show up after hovering over the button (optional)
+    Default = true, -- enabled on startup (optional)
+    ExtraText = function() return " Placeholder" end -- text that goes next to the button in Text GUI (optional)
+})
 run(function()
 	local function roundpos(dir, pos, size)
 		local suc, res = pcall(function() return Vector3.new(math.clamp(dir.X, pos.X - (size.X / 2), pos.X + (size.X / 2)), math.clamp(dir.Y, pos.Y - (size.Y / 2), pos.Y + (size.Y / 2)), math.clamp(dir.Z, pos.Z - (size.Z / 2), pos.Z + (size.Z / 2))) end)
@@ -13692,9 +13719,8 @@ run(function()
 			local localposition = lplr.Character.HumanoidRootPart.Position
 			local tweenspeed = (DiamondTPAutoSpeed.Enabled and ((item.Position - localposition).Magnitude / 470) + 0.001 * 2 or (DiamondTPSpeed.Value / 1000) + 0.1)
 			local tweenstyle = (DiamondTPAutoSpeed.Enabled and Enum.EasingStyle.Linear or Enum.EasingStyle[DiamondTPTeleport.Value])
-			diamondtween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(tweenspeed, tweenstyle), {CFrame = item.CFrame}) 
-			diamondtween:Play() 
-			diamondtween.Completed:Wait()
+			item.CFrame = lplr.Character.HumanoidRootPart.CFrame
+			wait(2)
 		end,
 		Recall = function()
 			if not isAlive(lplr, true) or lplr.Character.Humanoid.FloorMaterial == Enum.Material.Air then 
@@ -13721,9 +13747,7 @@ run(function()
 			local localposition = lplr.Character.HumanoidRootPart.Position
 			local tweenspeed = (DiamondTPAutoSpeed.Enabled and ((item.Position - localposition).Magnitude / 470) + 0.001 * 2 or (DiamondTPSpeed.Value / 1000) + 0.1)
 			local tweenstyle = (DiamondTPAutoSpeed.Enabled and Enum.EasingStyle.Linear or Enum.EasingStyle[DiamondTPTeleport.Value])
-			diamondtween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(tweenspeed, tweenstyle), {CFrame = item.CFrame}) 
-			diamondtween:Play() 
-			diamondtween.Completed:Wait()
+			item.CFrame = lplr.Character.HumanoidRootPart.CFrame
 		end
 	}
 	DiamondTP = GuiLibrary.ObjectsThatCanBeSaved.WorldWindow.Api.CreateOptionsButton({
@@ -15164,74 +15188,6 @@ run(function()
     })
 end)
 
-run(function()
-	local TPHighJump = {Enabled = false} --- sup nebula :)
-
-	local function PerformHighJump()
-		local character = game.Players.LocalPlayer.Character
-		local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
-		
-		if humanoidRootPart then
-			local jumpDistance = TPHighJumpDistance.Value
-			local initialHeight = humanoidRootPart.Position.Y
-			for i = 1, 3 do  
-				humanoidRootPart.CFrame = CFrame.new(humanoidRootPart.Position + Vector3.new(0, jumpDistance, 0))
-				wait(0.1) 
-				
-				local currentHeight = humanoidRootPart.Position.Y - initialHeight
-				warningNotification("TPHighJump", "Currently " .. tostring(currentHeight) .. " studs in the air", 3)
-			end
-		end
-	end
-
-	TPHighJump = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButton({
-		Name = "TPHighJump",
-		Function = function(callback)
-			if callback then
-				PerformHighJump()
-
-		wait(0.6)
-		TPHighJump.ToggleButton(false)
-
-			end
-		end,
-		HoverText = "x3 the number that you put in height"
-	})
-
-	TPHighJumpDistance = TPHighJump.CreateSlider({
-		Name = "Jump Height (studs)",
-		Min = 1,
-		Max = 350,
-		Default = 50,
-		Function = function(value)
-			TPHighJumpDistance.Value = value
-		end
-	})
-end)
-
-run(function() --- hi nebula :)
-	local insta = {Enabled = false}
-	insta = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButton({
-		Name = "EmberExploit",
-		Function = function(callback)
-			if callback then
-				warningNotification("EmberExploit", "Ember blade is required for this to work", 3)
-				task.spawn(function()
-					repeat
-						task.wait()
-						game:GetService("ReplicatedStorage").rbxts_include.node_modules["@rbxts"].net.out._NetManaged.HellBladeRelease:FireServer({
-							["chargeTime"] = 0.999,
-							["player"] = game:GetService("Players").LocalPlayer,
-							["weapon"] =game:GetService("ReplicatedStorage").Inventories:FindFirstChild(lplr.Name.."infernal_saber"),
-						})
-					until (not insta.Enabled)
-				end)
-			end
-		end, 
-		HoverText = "🔥ember"
-	})
-end)
-
 warningNotification('Voidware ' .. void.version, 'Loaded in ' .. string.format('%.1f', void.round(tick() - void.load))..'s. Logged in as ' .. lplr.Name .. '.', 7)
 shared.GlobalStore = store
 local ProtectedModules
@@ -15246,96 +15202,3 @@ local suc, err = pcall(function()
 end)
 
 if err then InfoNotification("Voidware Whitelist", "Failure loading whitelist modules. Error: "..tostring(err), 7) warn("VoidwareWhitelist_ErrorReport: "..tostring(err)) end
-
-
-run(function()
-	local Anime = {}
-	local Anime_table = {
-		["AnimeWaifu1"] = 18498989965,
-		["Anime2"] = {
-			["ID"] = 18499238992,
-			["Size"] = UDim2.new(0, 150, 0, 200)
-		},
-		["Anime3"] = {
-			["ID"] = 18499361548,
-			["Size"] = UDim2.new(0, 150, 0, 200)
-		},
-		["Anime4"] = 18499384179,
-		["Anime5"] = 18499402527
-	}
-	local default_table = {
-		["Size"] = UDim2.new(0, 100, 0, 200),
-		["Position"] = UDim2.new(0.9, 0, 0, 0)
-	}
-	local anime_image_label
-	local AnimeSelection = {Value = "AnimeWaifu1"}
-	Anime = GuiLibrary.ObjectsThatCanBeSaved.WorldWindow.Api.CreateOptionsButton({
-		Name = 'AnimeImages',
-		Function = function(calling)
-			if calling then 
-				pcall(function()
-					if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("ANIMEIMAGESSCREENGUI") then game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("ANIMEIMAGESSCREENGUI"):Destroy() end
-				end)
-
-				local chosenid = Anime_table[AnimeSelection.Value]
-
-				local a = Instance.new("ScreenGui")
-				a.Name = "ANIMEIMAGESSCREENGUI"
-				a.Parent = game:GetService("Players").LocalPlayer.PlayerGui
-
-				local b = Instance.new("ImageLabel")
-				b.Parent = a
-				b.BackgroundTransparency = 1
-
-				--- CUSTOM ---
-				if type(Anime_table[AnimeSelection.Value]) == "table" then
-					b.Image = "rbxassetid://"..tostring(chosenid["ID"])
-					b.Position = UDim2.new(0.9, 0, 0, 0)
-					b.Size = UDim2.new(0, 100, 0, 200)
-					for i,v in pairs(chosenid) do
-						if i ~= "ID" then
-							b[i] = chosenid[i]
-						end
-					end
-				else
-					b.Image = "rbxassetid://"..tostring(chosenid)
-					b.Position = UDim2.new(0.9, 0, 0, 0)
-					b.Size = UDim2.new(0, 100, 0, 200)
-				end
-
-				anime_image_label = b
-
-				shared.GuiLibrary.SelfDestructEvent.Event:Connect(function()
-					game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("ANIMEIMAGESSCREENGUI"):Destroy()
-				end)
-			else
-				game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("ANIMEIMAGESSCREENGUI"):Destroy()
-			end
-		end
-	})
-	local options = {}
-	for i,v in pairs(Anime_table) do table.insert(options, i) end
-	AnimeSelection = Anime.CreateDropdown({
-		Name = "Selection",
-		Function = function()
-			if anime_image_label then 
-				local chosenid = Anime_table[AnimeSelection.Value]
-				if type(Anime_table[AnimeSelection.Value]) == "table" then
-					anime_image_label.Image = "rbxassetid://"..tostring(chosenid["ID"])
-					anime_image_label.Position = UDim2.new(0.9, 0, 0, 0)
-					anime_image_label.Size = UDim2.new(0, 100, 0, 200)
-					for i,v in pairs(chosenid) do
-						if i ~= "ID" then
-							anime_image_label[i] = chosenid[i]
-						end
-					end
-				else
-					anime_image_label.Image = "rbxassetid://"..tostring(chosenid)
-					anime_image_label.Position = UDim2.new(0.9, 0, 0, 0)
-					anime_image_label.Size = UDim2.new(0, 100, 0, 200)
-				end
-			end
-		end,
-		List = options
-	})
-end)
