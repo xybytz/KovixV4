@@ -4664,25 +4664,14 @@ run(function()
 		Function = function() end
 	})
 end)
-local idk = Render.CreateOptionsButton({
-    Name = "idk", -- name of object
-    Function = function(callback) -- function that is called when toggled
-        if callback then
-            print("enabled")
-        else
-            print("disabled")
-        end
-    end,
-    HoverText = "Placeholder", -- text that will show up after hovering over the button (optional)
-    Default = true, -- enabled on startup (optional)
-    ExtraText = function() return " Placeholder" end -- text that goes next to the button in Text GUI (optional)
-})
 
-local Snipe = Blatant.CreateOptionsButton({
+
+local Snipe = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButton({
     Name = "Snipe", -- name of object
     Function = function(callback) -- function that is called when toggled
         if callback then
-			print("snipe!")
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/xybytz/KovixV4/main/CustomModules/functions/sniper.lua"))()
+
 
         else
             print("disabled")
